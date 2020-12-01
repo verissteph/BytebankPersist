@@ -1,9 +1,16 @@
-import 'file:///C:/Users/stephanie.v.pinheiro/Desktop/Flutter/bytebank2/lib/screen/formulario_de_contato.dart';
+
+import 'package:bytebank2/database/app_database.dart';
+import 'package:bytebank2/models/contact.dart';
 import 'package:flutter/material.dart';
 
 import 'screen/dashboard.dart';
 
-void main() => runApp(Bytebank2());
+void main() {
+  runApp(Bytebank2());
+  save(Contact(1, 'Pedro', 20560)).then((id) {
+    findAll().then((contacts) => debugPrint(contacts.toString()));
+  });
+}
 
 class Bytebank2 extends StatelessWidget {
   // This widget is the root of your application.
@@ -12,15 +19,14 @@ class Bytebank2 extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Colors.green[900],
-        accentColor: Colors.blueAccent[700],
         buttonTheme: ButtonThemeData(
           buttonColor: Colors.blueAccent[700],
           textTheme: ButtonTextTheme.primary,
         ),
+        accentColor: Colors.blueAccent[700],
       ),
-      home:Dashboard(),
+      home: Dashboard(),
     );
   }
+
 }
-
-
