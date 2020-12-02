@@ -2,32 +2,32 @@ import 'package:bytebank2/models/contact.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-Future<Database> createDatabase() {
-  return getDatabasesPath().then((dbPath) {
-    final String path = join(dbPath, 'bytebank.db');
+Future<Database> createDatabase() async {
+  String dbPath = await getDatabasesPath();
+    String path = join(dbPath, 'bytebank.db');
     return openDatabase(path, onCreate: (db, version) {
       db.execute('CREATE TABLE contacts_bank('
           'id INTEGER PRIMARY KEY, '
           'name  TEXT, '
           'account_number INTEGER)');
-    }, version: 1);
-  });
+    }, version: 1,
+    onDowngrade: onDatabaseDowngradeDelete);
+
 }
 
-Future<int> save(Contact contact) {
-  return createDatabase().then((db) {
-    final Map<String, dynamic> contactMap = Map();
-    contactMap['id'] = contact.id;
-    contactMap['name'] = contact.name;
-    contactMap['account_number'] = contact.accountNumber;
-    return db.insert('contacts_bank', contactMap);
-  });
-}
+Future<int> save(Contact contact) async{
+  Map<String, dynamic> contactMap = Map();
+  contactMap['name'] = contact.name;
+  contactMap['account_number'] = contact.accountNumber;
+  Database db = await createDatabase();
+   return db.insert('contacts_bank', contactMap);
+ }
 
-Future<List<Contact>> findAll() {
-  return createDatabase().then((db) {
-    return db.query('contacts_bank').then((maps) {
-      final List<Contact> contacts = List();
+Future<List<Contact>> findAll() async {
+  Database db = await createDatabase();
+ List <Map<String, dynamic>> maps = await db.query('contacts_bank');
+
+      List<Contact> contacts = List();
       for (Map<String, dynamic> map in maps) {
         final Contact contact = Contact(
           map['id'],
@@ -36,8 +36,6 @@ Future<List<Contact>> findAll() {
         );
         contacts.add(contact);
       }
-
       return contacts;
-    });
-  });
+
 }
