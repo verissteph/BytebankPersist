@@ -1,5 +1,6 @@
 
 import 'package:bytebank2/database/app_database.dart';
+import 'package:bytebank2/database/dao/contact_dao.dart';
 import 'package:bytebank2/models/contact.dart';
 import 'package:flutter/material.dart';
 
@@ -7,8 +8,9 @@ import 'screen/dashboard.dart';
 
 void main() {
   runApp(Bytebank2());
+  final ContactDao dao = ContactDao();
 
-    findAll().then((contacts) => debugPrint(contacts.toString()));
+    dao.findAll().then((contacts) => debugPrint(contacts.toString()));
 
 }
 
