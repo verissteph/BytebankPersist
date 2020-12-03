@@ -1,10 +1,15 @@
 import 'package:bytebank2/screen/contact_list.dart';
+import 'package:bytebank2/screen/transactions_list.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
   void showContactList(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => ContactList()));
+  }
+  void showTransactionFeed(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => TransactionsList()));
   }
 
   @override
@@ -35,7 +40,7 @@ class Dashboard extends StatelessWidget {
                       'Transaction feed',
                       Icons.description,
                       onClick: () {
-                        print("transaction feed was clicked!");
+                        showTransactionFeed(context);
                       },
                     ),
 
