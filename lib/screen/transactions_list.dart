@@ -1,32 +1,42 @@
-
+import 'package:bytebank2/components/centered_message.dart';
 import 'package:bytebank2/components/progress.dart';
 import 'package:bytebank2/http/webCliente.dart';
 import 'package:bytebank2/models/transaction.dart';
 import 'package:flutter/material.dart';
+
 class TransactionsList extends StatelessWidget {
   final List<Transaction> transactions = List();
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Transactions'),
       ),
       body: FutureBuilder<List<Transaction>>(
-          future:findAllTransactions(),
+          future: findAllTransactions(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
-              // TODO: Handle this case.
+                // TODO: Handle this case.
                 break;
               case ConnectionState.waiting:
-                return Progress(mensagem: 'Carregando transações da API REST',);
+                return Progress(
+                  mensagem: 'Carregando transações da API REST',
+                );
                 break;
               case ConnectionState.active:
-              // TODO: Handle this case.
+                // TODO: Handle this case.
                 break;
               case ConnectionState.done:
-                List <Transaction> transactions = snapshot.data;
+                if (snapshot.hasError) {
+                  return CenteredMessage('deu merda!!', icon: Icons.error);
+                }
+                List<Transaction> transactions = snapshot.data;
+                if (transactions.isEmpty) {
+                  return CenteredMessage('nenhuma transação cadastrada',
+                      icon: Icons.warning);
+                }
                 return ListView.builder(
                   itemBuilder: (context, index) {
                     final Transaction transaction = transactions[index];
@@ -54,13 +64,10 @@ class TransactionsList extends StatelessWidget {
                 break;
             }
             return Text('Erro desconhecido');
-          }
-      ),
+          }),
     );
   }
 }
-
-
 
 // import 'package:bytebank2/models/contact.dart';
 // import 'package:bytebank2/models/transaction.dart';
