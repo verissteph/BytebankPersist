@@ -1,6 +1,7 @@
 
 import 'package:bytebank2/database/app_database.dart';
 import 'package:bytebank2/database/dao/contact_dao.dart';
+import 'package:bytebank2/http/webCliente.dart';
 import 'package:bytebank2/models/contact.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ void main() {
   final ContactDao dao = ContactDao();
 
     dao.findAll().then((contacts) => debugPrint(contacts.toString()));
-
+  findAllTransactions();
 }
 
 class Bytebank2 extends StatelessWidget {
